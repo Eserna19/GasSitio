@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <titl>Panel de Administración</title>
+  <!-- Agrega Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Agrega tu propio archivo CSS para estilos personalizados -->
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body class="dark-mode"> <!-- Agrega la clase "dark-mode" al body -->
+  <div class="container">
+    <h1>Panel de Administración</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <canvas id="chartHumedad"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id="chartTemperatura"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agrega Bootstrap JS (opcional, si lo necesitas) -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Agrega Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Función para actualizar la gráfica de humedad
+    function actualizarGraficaHumedad() {
+    fetch('https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva')
+      .then(response => response.json())
+      .then(data => {
+        const results = data.results; // Accede a la matriz de resultados
+
+        // Construye arreglos de humedad y fechas
+        const humedad = results.map(item => item.value);
+        const fechas = results.map(item => new Date(item.timestamp).toLocaleString());
+
+        // Actualiza los datos de la gráfica de humedad con los datos obtenidos
+        myChartHumedad.data.labels = fechas;
+        myChartHumedad.data.datasets[0].data = humedad;
+
+        // Actualiza la gráfica de humedad
+        myChartHumedad.update();
+      })
+      .catch(error => console.error('Error al obtener datos de Ubidots para humedad:', error));
+  }
+    actualizarGraficaHumedad();
+
+    // Función para actualizar la gráfica de temperatura
+    function actualizarGraficaTemperatura() {
+    fetch('https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva')
+      .then(response => response.json())
+      .then(data => {
+        const results = data.results; // Accede a la matriz de resultados
+
+        // Construye arreglos de temperatura y fechas
+        const temperatura = results.map(item => item.value);
+        const fechas = results.map(item => new Date(item.timestamp).toLocaleString());
+
+        // Actualiza los datos de la gráfica de temperatura con los datos obtenidos
+        myChartTemperatura.data.labels = fechas;
+        myChartTemperatura.data.datasets[0].data = temperatura;
+
+        // Actualiza la gráfica de temperatura
+        myChartTemperatura.update();
+      })
+      .catch(error => console.error('Error al obtener datos de Ubidots para temperatura:', error));
+  }
+    actualizarGraficaTemperatura();
+
+    // Configuración y creación de la gráfica de humedad
+    var ctxHumedad = document.getElementById('chartHumedad').getContext('2d');
+    var myChartHumedad = new Chart(ctxHumedad, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Índice de Humedad',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          data: []
+        }]
+      },
+      options: {
+        // Configuraciones opcionales de la gráfica
+      }
+    });
+
+    // Configuración y creación de la gráfica de temperatura
+    var ctxTemperatura = document.getElementById('chartTemperatura').getContext('2d');
+    var myChartTemperatura = new Chart(ctxTemperatura, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Temperatura (°C)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          data: []
+        }]
+      },
+      options: {
+        // Configuraciones opcionales de la gráfica
+      }
+    });
+
+  </script>
+</body>
+</html>

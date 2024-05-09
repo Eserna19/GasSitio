@@ -1,0 +1,19 @@
+/* styles.css */
+
+/* Estilos generales */
+body.dark-mode {
+    background-color: #333; /* Color de fondo oscuro */
+    color: #fff; /* Color de texto claro */
+  }
+  
+  /* Estilos específicos de la gráfica */
+  .dark-mode .chart-container {
+    background-color: #444; /* Color de fondo oscuro para el contenedor de la gráfica */
+  }
+  
+  .dark-mode .chart-label {
+    color: #aaa; /* Color de etiqueta de gráfico en modo oscuro */
+  }
+  
+  /* Otros estilos específicos de tu página */
+  

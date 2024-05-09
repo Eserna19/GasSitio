@@ -1,0 +1,19 @@
+{
+  "name": "frontendgas",
+  "version": "1.0.0",
+  "description": "aplicacion para visualizacion de datos",
+  "main": "index.js",
+  "scripts": {
+    "test": "index.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "npm"
+  ],
+  "author": "Eduardo Serna",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
