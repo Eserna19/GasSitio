@@ -4,7 +4,8 @@
   "description": "aplicacion para visualizacion de datos",
   "main": "index.js",
   "scripts": {
-    "test": "index.js"
+    "test": "index.js",
+    "build": "webpack --config webpack.config.js"
   },
   "keywords": [
     "express",
