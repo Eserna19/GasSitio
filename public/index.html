@@ -19,6 +19,9 @@
       <div class="col-md-6">
         <canvas id="chartTemperatura"></canvas>
       </div>
+      <div class="col-md-6">
+        <canvas id="chartGas"></canvas>
+      </div>
     </div>
   </div>
 
@@ -71,6 +74,29 @@
   }
     actualizarGraficaTemperatura();
 
+  // Función para actualizar la gráfica de Gas
+  function actualizarGraficaGas() {
+    fetch('https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva')
+      .then(response => response.json())
+      .then(data => {
+        const results = data.results; // Accede a la matriz de resultados
+
+        // Construye arreglos de gas y fechas
+        const gas = results.map(item => item.value);
+        const fechas = results.map(item => new Date(item.timestamp).toLocaleString());
+
+        // Actualiza los datos de la gráfica de temperatura con los datos obtenidos
+        myChartGas.data.labels = fechas;
+        myChartGas.data.datasets[0].data = gas;
+
+        // Actualiza la gráfica de temperatura
+        myChartGas.update();
+      })
+      .catch(error => console.error('Error al obtener datos de Ubidots para gas:', error));
+  }
+    actualizarGraficaGas();
+
+
     // Configuración y creación de la gráfica de humedad
     var ctxHumedad = document.getElementById('chartHumedad').getContext('2d');
     var myChartHumedad = new Chart(ctxHumedad, {
@@ -108,6 +134,26 @@
         // Configuraciones opcionales de la gráfica
       }
     });
+
+    // Configuración y creación de la gráfica de gas
+    var ctxGas = document.getElementById('chartGas').getContext('2d');
+    var myChartGas = new Chart(ctxGas, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Gas',
+          backgroundColor: 'rgba(11, 248, 112, 0.2)',
+          borderColor: 'rgba(11, 248, 112)',
+          borderWidth: 1,
+          data: []
+        }]
+      },
+      options: {
+        // Configuraciones opcionales de la gráfica
+      }
+    });
+
 
   </script>
 </body>
