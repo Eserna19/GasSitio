@@ -7,7 +7,7 @@
   <!-- Agrega Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Agrega tu propio archivo CSS para estilos personalizados -->
-  <link href="styles.css" rel="stylesheet">
+  <link href="/Users/Jeser/Downloads/SitioGas/css/styles.css" rel="stylesheet">
 </head>
 <body class="dark-mode"> <!-- Agrega la clase "dark-mode" al body -->
   <div class="container">
@@ -22,6 +22,8 @@
       <div class="col-md-6">
         <canvas id="chartGas"></canvas>
       </div>
+      <!-- Botón para ver los datos en una tabla -->
+      <button onclick="verTabla()" class="btn btn-primary mt-3">Ver datos en tabla</button>
     </div>
   </div>
 
@@ -29,6 +31,13 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <!-- Agrega Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Función para redirigir a la página de la tabla
+    function verTabla() {
+      window.location.href = "Histograma.html";
+    }
+  
+  </script>
   <script>
     // Función para actualizar la gráfica de humedad
     function actualizarGraficaHumedad() {

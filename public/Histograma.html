@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos de Sensores</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="dark-mode">
+  <div class="container">
+    <h1>Datos de Sensores</h1>
+    <table class="table table-dark table-striped" id="dataTable">
+      <thead>
+        <tr>
+          <th>Fecha y Hora</th>
+          <th>Humedad (%)</th>
+          <th>Temperatura (°C)</th>
+          <th>Gas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se agregarán las filas dinámicamente -->
+      </tbody>
+    </table>
+    <button class="btn btn-primary" onclick="downloadCSV()">Descargar CSV</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const urls = {
+        humedad: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        temperatura: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        gas: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva'
+      };
+
+      Promise.all([
+        fetch(urls.humedad).then(response => response.json()),
+        fetch(urls.temperatura).then(response => response.json()),
+        fetch(urls.gas).then(response => response.json())
+      ]).then(([humedadData, temperaturaData, gasData]) => {
+        const fechas = humedadData.results.map(item => new Date(item.timestamp).toLocaleString());
+        const humedades = humedadData.results.map(item => item.value);
+        const temperaturas = temperaturaData.results.map(item => item.value);
+        const gases = gasData.results.map(item => item.value);
+
+        const tbody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+
+        for (let i = 0; i < fechas.length; i++) {
+          const row = tbody.insertRow();
+          const cellFecha = row.insertCell(0);
+          const cellHumedad = row.insertCell(1);
+          const cellTemperatura = row.insertCell(2);
+          const cellGas = row.insertCell(3);
+
+          cellFecha.textContent = fechas[i];
+          cellHumedad.textContent = humedades[i];
+          cellTemperatura.textContent = temperaturas[i];
+          cellGas.textContent = gases[i];
+        }
+      }).catch(error => console.error('Error al obtener datos de Ubidots:', error));
+    });
+
+    function downloadCSV() {
+      const rows = Array.from(document.querySelectorAll('table tr'));
+      let csvContent = "data:text/csv;charset=utf-8,";
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td, th');
+        const data = Array.from(cols).map(col => col.textContent).join(",");
+        csvContent += data + "\n";
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "datos_sensores.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
