@@ -28,9 +28,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const urls = {
-        humedad: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
-        temperatura: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
-        gas: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva'
+        humedad: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        temperatura: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        gas: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva'
       };
 
       Promise.all([
