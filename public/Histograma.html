@@ -28,9 +28,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const urls = {
-        humedad: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
-        temperatura: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
-        gas: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva'
+        humedad: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/humedad/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        temperatura: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/temperatura/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva',
+        gas: 'https://industrial.api.ubidots.com/api/v1.6/devices/esp32/gas/values/?page_size=1000&token=BBUS-1HU7MRuHJlpT1WDWwQb1si0eRbOgva'
       };
 
       Promise.all([
@@ -65,10 +65,9 @@
       let csvContent = "data:text/csv;charset=utf-8,";
       rows.forEach(row => {
         const cols = row.querySelectorAll('td, th');
-        const data = Array.from(cols).map(col => col.textContent).join(",");
-        csvContent += data + "\n";
+        const data = Array.from(cols).map(col => col.textContent);
+        csvContent += data.join(",") + "\r\n";
       });
-
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
